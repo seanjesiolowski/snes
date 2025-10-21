@@ -1,0 +1,44 @@
+/* https://www.color-hex.com/color-palette/22515 */
+
+body {
+  background-color: #cec9cc;
+  font-family: 'Courier New', Courier;
+  text-align: center;
+}
+
+header {
+  height: 60px;
+}
+
+div {
+  margin: 20px;
+}
+
+h1 {
+  color: #908a99;
+}
+
+img {
+  border: 5px solid #b5b6e4;
+  width: 300px;
+  height: auto;
+}
+
+a {
+  color: #211a21;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #211a21;
+}
+
+a:hover {
+  color: #4f43ae;
+}
+
+ul {
+  list-style-type: none;
+}
