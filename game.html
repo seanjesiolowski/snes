@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-
         body {
             height: 100vh;
             margin: 0;
@@ -18,10 +17,9 @@
             justify-content: space-between; /*aligns items across the main axis [vertical here]*/
             align-items: center; /*aligns items across the cross axis [horizontal here]*/
         }
-
         .row {
-            width: 360px;
-            height: 60px;
+            width: 600px;
+            height: 80px;
             padding: 5px;
             border: 5px solid #4f43ae;
             background: #908a99;
@@ -30,63 +28,109 @@
             justify-content: space-evenly; /*aligns items across the main axis [horizontal here]*/
             align-items: center; /*aligns items across the cross axis [vertical here]*/
         }
-
+        /* Box art image ratios: 90:62 (most), 90:65 (Chrono Trigger, DKC2, Earthbound) */
         .item {
-            width: 40px;
-            height: 40px;
+            width: 90px;
+            height: 62px;
             border: 5px solid #211a21;
             background: #b5b6e4;
         }
-
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #fill {
+            width: 90px;
+            height: 62px;
+            background: #4f43ae;
+        }
         .spacer {
             height: 5px;
         }
-
     </style>
 </head>
 <body>
     <header>under construction</header>
     <main>
         <div class="row">
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
         </div>
         <div class="spacer"></div>
         <div class="row">
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
         </div>
         <div class="spacer"></div>
         <div class="row">
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item">
+                <div id="fill"></div>
+            </div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
         </div>
             <div class="spacer"></div>
         <div class="row">
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
         </div>
             <div class="spacer"></div>
         <div class="row">
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="displayImage(this)"></div>
         </div>
     </main>
     <footer>under construction</footer>
+    <script>
+    
+        function displayImage(clickedElement) {
+            const imgElement = clickedElement.querySelector('img');
+            if (imgElement.style.display === 'none') {
+                imgElement.style.display = 'block';
+            } else {
+                imgElement.style.display = 'none';
+            }
+        }
+
+        const srcArray = [
+            "https://upload.wikimedia.org/wikipedia/en/8/89/SuperMarioRPGSNESCoverArtUS.jpg", // Wikpedia image uploaded by IceWelder
+            "https://upload.wikimedia.org/wikipedia/en/e/e4/Smetroidbox.jpg", // Wikpedia image uploaded by Neocorelight
+            "https://upload.wikimedia.org/wikipedia/en/3/32/Super_Mario_World_Coverart.png", // Wikpedia image uploaded by IceWelder
+            "https://upload.wikimedia.org/wikipedia/en/a/a7/Chrono_Trigger.jpg", // Wikpedia image uploaded by Veikk0.ma
+            "https://upload.wikimedia.org/wikipedia/en/2/21/The_Legend_of_Zelda_A_Link_to_the_Past_SNES_Game_Cover.jpg", // Wikpedia image uploaded by NintenBOUND
+            "https://upload.wikimedia.org/wikipedia/en/1/1f/EarthBound_Box.jpg", // Wikpedia image uploaded by Czar
+            "https://upload.wikimedia.org/wikipedia/en/f/f1/Mega_Man_X_Coverart.png", // Wikpedia image uploaded by IceWelder
+            "https://upload.wikimedia.org/wikipedia/en/1/1a/Donkey_Kong_Country_SNES_cover.png", // Wikpedia image uploaded by IceWelder
+            "https://upload.wikimedia.org/wikipedia/en/3/38/Supermariokart_box.JPG", // Wikpedia image uploaded by IceWelder
+            "https://upload.wikimedia.org/wikipedia/en/3/3c/Super_Mario_All_Stars_%28game_box_art%29.jpg", // Wikpedia image uploaded by DatBot
+            "https://upload.wikimedia.org/wikipedia/en/c/c3/DK_Country_2.jpg", // Wikpedia image uploaded by DatBot
+            "https://upload.wikimedia.org/wikipedia/en/9/9a/Yoshi%27s_Island_%28Super_Mario_World_2%29_box_art.jpg" // Wikpedia image uploaded by IceWelder
+        ];
+        const srcArrayDouble = srcArray.concat(srcArray); // Duplicate the array for pairs
+        const srcArrayDoubleShuffled = srcArrayDouble.sort(() => Math.random() - 0.5); // Shuffle the array
+        // Assign images to elements
+        const elements = document.querySelectorAll('.getsImg');
+        elements.forEach((el, idx) => {
+            const newChildImg = el.appendChild(document.createElement("img"));
+            newChildImg.style.display = 'none';
+            newChildImg.src = srcArrayDoubleShuffled[idx];
+        });
+
+    </script>
 </body>
 </html>
