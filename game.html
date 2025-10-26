@@ -103,7 +103,6 @@
             if (canReload) {
                 window.location.reload();
             }
-
         }
 
 
@@ -167,23 +166,21 @@
             toggleDisplay(imgElement);
         }
 
-        var canReload = false;
+        let canReload = false;
 
-        var correctSnd = new Audio("correct.mp3"); // buffers automatically when created
+        const correctSnd = new Audio("correct.mp3"); // buffers automatically when created
         correctSnd.volume = 0.3;
         //https://pixabay.com/sound-effects/the-correct-answer-33-183620/
 
-        var winSnd = new Audio("win.mp3"); // buffers automatically when created
+        const winSnd = new Audio("win.mp3"); // buffers automatically when created
         //https://pixabay.com/sound-effects/you-win-sequence-2-183949/
 
-////////////////////////////////////// where to put this code?
         let matchElement1 = null;
         let matchValue1 = null;
         let matchElement2 = null;
         let matchValue2 = null;
 
         let matchesFound = 0;
-////////////////////////////////////// where to put this code?
 
         const srcArray = [
             "https://upload.wikimedia.org/wikipedia/en/8/89/SuperMarioRPGSNESCoverArtUS.jpg", // Wikpedia image uploaded by IceWelder
