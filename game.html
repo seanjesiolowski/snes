@@ -73,7 +73,7 @@
             <div class="item getsImg" onclick="handleComparison(this)"></div>
             <div class="item getsImg" onclick="handleComparison(this)"></div>
             <div class="item">
-                <div id="fill"></div>
+                <div id="fill" onclick="reloadPage()"></div>
             </div>
             <div class="item getsImg" onclick="handleComparison(this)"></div>
             <div class="item getsImg" onclick="handleComparison(this)"></div>
@@ -98,6 +98,14 @@
     <footer>under construction</footer>
     <script>
     
+
+        function reloadPage() {
+            if (canReload) {
+                window.location.reload();
+            }
+
+        }
+
 
         function toggleDisplay(imgElement) {
             if (imgElement.style.display === 'none') {
@@ -135,6 +143,7 @@
                         matchElement2.onclick = null;
                         matchesFound += 1;
                         if (matchesFound === matchGoal){
+                            canReload = true;
                             winSnd.play();
                             console.log(" ");
                             console.log("Congratulations! You've found all matches!");
@@ -158,9 +167,10 @@
             toggleDisplay(imgElement);
         }
 
+        var canReload = false;
 
         var correctSnd = new Audio("correct.mp3"); // buffers automatically when created
-        correctSnd.volume = 0.5;
+        correctSnd.volume = 0.3;
         //https://pixabay.com/sound-effects/the-correct-answer-33-183620/
 
         var winSnd = new Audio("win.mp3"); // buffers automatically when created
