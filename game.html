@@ -128,12 +128,14 @@
                 }
                 if (matchValue1 && matchValue2){
                     if (matchValue1 === matchValue2){
+                        correctSnd.play();
                         console.log(" ");
                         console.log("It's a match!");
                         matchElement1.onclick = null;
                         matchElement2.onclick = null;
                         matchesFound += 1;
                         if (matchesFound === matchGoal){
+                            winSnd.play();
                             console.log(" ");
                             console.log("Congratulations! You've found all matches!");
                         }
@@ -156,6 +158,13 @@
             toggleDisplay(imgElement);
         }
 
+
+        var correctSnd = new Audio("correct.mp3"); // buffers automatically when created
+        correctSnd.volume = 0.5;
+        //https://pixabay.com/sound-effects/the-correct-answer-33-183620/
+
+        var winSnd = new Audio("win.mp3"); // buffers automatically when created
+        //https://pixabay.com/sound-effects/you-win-sequence-2-183949/
 
 ////////////////////////////////////// where to put this code?
         let matchElement1 = null;
