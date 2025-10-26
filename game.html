@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Matching Game</title>
     <style>
         body {
             height: 100vh;
@@ -54,58 +54,117 @@
     <header>under construction</header>
     <main>
         <div class="row">
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
         </div>
         <div class="spacer"></div>
         <div class="row">
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
         </div>
         <div class="spacer"></div>
         <div class="row">
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
             <div class="item">
                 <div id="fill"></div>
             </div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
         </div>
             <div class="spacer"></div>
         <div class="row">
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
         </div>
             <div class="spacer"></div>
         <div class="row">
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
-            <div class="item getsImg" onclick="displayImage(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
+            <div class="item getsImg" onclick="handleComparison(this)"></div>
         </div>
     </main>
     <footer>under construction</footer>
     <script>
     
-        function displayImage(clickedElement) {
-            const imgElement = clickedElement.querySelector('img');
+
+        function toggleDisplay(imgElement) {
             if (imgElement.style.display === 'none') {
                 imgElement.style.display = 'block';
             } else {
                 imgElement.style.display = 'none';
             }
         }
+
+
+        function handleComparison(divEl) {
+            const imgElement = divEl.querySelector('img');
+            const imgSrc = imgElement.src;
+
+            if (!matchValue1 && !matchValue2){
+                matchElement1 = divEl;
+                matchValue1 = imgSrc;
+                console.log("First selection made.");
+            } else {
+                if (matchValue1 && !matchValue2){
+                    matchElement2 = divEl;
+                    if (matchElement1 === matchElement2){
+                        console.log("Same element clicked twice. Choose another.");
+                        matchElement2 = null;
+                        return;}
+                    matchValue2 = imgSrc;
+                    console.log("Second selection made.");
+                }
+                if (matchValue1 && matchValue2){
+                    if (matchValue1 === matchValue2){
+                        console.log(" ");
+                        console.log("It's a match!");
+                        matchElement1.onclick = null;
+                        matchElement2.onclick = null;
+                        matchesFound += 1;
+                        if (matchesFound === matchGoal){
+                            console.log(" ");
+                            console.log("Congratulations! You've found all matches!");
+                        }
+                    } else {
+                        console.log("No match.");
+                        let imgEl1 = matchElement1.querySelector('img');
+                        let imgEl2 = matchElement2.querySelector('img');
+                        setTimeout(() => {
+                            toggleDisplay(imgEl1);
+                            toggleDisplay(imgEl2);
+                        }
+                        , 1000);
+                    }
+                    matchElement1 = null;
+                    matchValue1 = null;
+                    matchElement2 = null;
+                    matchValue2 = null;
+                }
+            }
+            toggleDisplay(imgElement);
+        }
+
+
+////////////////////////////////////// where to put this code?
+        let matchElement1 = null;
+        let matchValue1 = null;
+        let matchElement2 = null;
+        let matchValue2 = null;
+
+        let matchesFound = 0;
+////////////////////////////////////// where to put this code?
 
         const srcArray = [
             "https://upload.wikimedia.org/wikipedia/en/8/89/SuperMarioRPGSNESCoverArtUS.jpg", // Wikpedia image uploaded by IceWelder
@@ -121,8 +180,10 @@
             "https://upload.wikimedia.org/wikipedia/en/c/c3/DK_Country_2.jpg", // Wikpedia image uploaded by DatBot
             "https://upload.wikimedia.org/wikipedia/en/9/9a/Yoshi%27s_Island_%28Super_Mario_World_2%29_box_art.jpg" // Wikpedia image uploaded by IceWelder
         ];
+        const matchGoal = srcArray.length; // Number of unique images to match
         const srcArrayDouble = srcArray.concat(srcArray); // Duplicate the array for pairs
         const srcArrayDoubleShuffled = srcArrayDouble.sort(() => Math.random() - 0.5); // Shuffle the array
+
         // Assign images to elements
         const elements = document.querySelectorAll('.getsImg');
         elements.forEach((el, idx) => {
