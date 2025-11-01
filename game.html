@@ -118,6 +118,8 @@
 
 
         function handleComparison(divEl) {
+            clickSnd.play();
+
             const imgElement = divEl.querySelector("img");
             const imgSrc = imgElement.src;
 
@@ -172,12 +174,15 @@
 
         let canReload = false;
 
-        const correctSnd = new Audio("correct.mp3"); // buffers automatically when created
+        const correctSnd = new Audio("aud/correct.mp3"); // buffers automatically when created
         correctSnd.volume = 0.3;
         //https://pixabay.com/sound-effects/the-correct-answer-33-183620/
 
-        const winSnd = new Audio("win.mp3"); // buffers automatically when created
+        const winSnd = new Audio("aud/win.mp3"); // buffers automatically when created
         //https://pixabay.com/sound-effects/you-win-sequence-2-183949/
+
+        const clickSnd = new Audio("aud/click_003.ogg"); // buffers automatically when created
+        // https://kenney.nl/assets/interface-sounds
 
         let matchElement1 = null;
         let matchValue1 = null;
