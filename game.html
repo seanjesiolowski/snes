@@ -189,16 +189,6 @@
                     <span class="slider" aria-hidden="true"></span>
                 </label>
             </div>
-            <div class="row">
-                <div>
-                    <div style="font-weight:600;">Difficulty</div>
-                    <div style="font-size:12px;color:#6a5f73;">Select the game difficulty</div>
-                </div>
-                <select id="modeToggle" aria-label="Select game mode">
-                    <option value="free" selected>Free</option>
-                    <option value="challenge">Challenge</option>
-                </select>
-            </div>
             <div class="actions">
                 <button id="cancelBtn" class="btn btn-ghost" type="button">Cancel</button>
                 <button id="startBtn" class="btn btn-primary" type="button">Save & Start</button>
@@ -250,8 +240,6 @@
     </main>
     <!-- In-game floating sound toggle -->
     <button id="inGameToggle" aria-pressed="true" title="Toggle sound" class="in-game-toggle">🔊</button>
-    <!-- Click message -->
-    <div id="clickMessage">Click the tiles and match the SNES games!</div>
     <script>
 
         // Interaction gate while settings modal is open
@@ -288,8 +276,6 @@
             }
             const toggle = document.getElementById('soundToggle');
             if (toggle) toggle.checked = isSoundEnabled;
-            const modeToggle = document.getElementById('modeToggle');
-            if (modeToggle) modeToggle.value = 'free';
         }
 
         function showSettingsModal() {
@@ -363,11 +349,13 @@
             showSettingsModal();
         });
 
+
         function reloadPage() {
             if (canReload) {
                 window.location.reload();
             }
         }
+
 
         function toggleDisplay(imgElement) {
             if (imgElement.style.display === "none") {
@@ -377,28 +365,17 @@
             }
         }
 
-        let clickCountEnabled = true; // default to challenge mode
-        let clickCount = 0;
-        const maxGuesses = 50;
 
         function handleComparison(divEl) {
             if (!allowInteraction) return; // ignore clicks while settings are open
             playSound(clickSnd);
 
-            if (clickCount >= maxGuesses) {
-                return; // do not allow further clicks if max guesses reached
-            }
-
-            // Get the image source of the clicked element
             const imgElement = divEl.querySelector("img");
             const imgSrc = imgElement.src;
 
             if (!matchValue1 && !matchValue2){
                 matchElement1 = divEl;
                 matchValue1 = imgSrc;
-                if (clickCountEnabled) {
-                    clickCount++;
-                }
                 console.log("First selection made.");
             } else {
                 if (matchValue1 && !matchValue2){
@@ -408,9 +385,6 @@
                         matchElement2 = null;
                         return;}
                     matchValue2 = imgSrc;
-                    if (clickCountEnabled) {
-                        clickCount++;
-                    }
                     console.log("Second selection made.");
                 }
                 if (matchValue1 && matchValue2){
@@ -446,18 +420,8 @@
                 }
             }
             toggleDisplay(imgElement);
-        
-            if (clickCountEnabled) {
-                // Display a message to the user
-                const message = document.getElementById('clickMessage');
-                if (clickCount >= maxGuesses) {
-                    message.style.color = "red";
-                    message.textContent = "You have reached the maximum number of guesses. Try again!";
-                } else {
-                    message.textContent = `You have ${maxGuesses - clickCount} tries left.`;
-                }
-            }
         }
+
 
         let canReload = false;
 
