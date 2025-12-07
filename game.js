@@ -7,7 +7,7 @@ let matchValue1 = null;
 let matchElement2 = null;
 let matchValue2 = null;
 let matchesFound = 0;
-let clickCountEnabled = true; // default to challenge mode
+let isChallengeMode = true; // default to challenge mode
 let clickCount = 0;
 const maxGuesses = 50;
 
@@ -20,6 +20,7 @@ const clickSnd = new Audio("aud/click_003.ogg");
 // DOM elements
 const settingsModal = document.getElementById('settingsModal');
 const soundToggle = document.getElementById('soundToggle');
+const modeToggle = document.getElementById('modeToggle'); // NEW: For challenge mode
 const inGameToggle = document.getElementById('inGameToggle');
 const startBtn = document.getElementById('startBtn');
 const cancelBtn = document.getElementById('cancelBtn');
@@ -39,25 +40,26 @@ function playSound(audioObj) {
     }
 }
 
-function setSoundEnabled(enabled) { // NEW: Persist sound state
-    isSoundEnabled = !!enabled;
-    try { localStorage.setItem('snes_sound', isSoundEnabled ? '1' : '0'); } catch(_e){}
-    updateUIForSoundState(); // Update UI after state change
+function setSetting(settingName, value) {
+    switch (settingName) {
+        case 'sound':
+            isSoundEnabled = !!value;
+            updateUIForSoundState();
+            break;
+        case 'challengeMode':
+            isChallengeMode = !!value;
+            updateUIForChallengeModeState();
+            break;
+    }
 }
 
-function loadSettingsToUI() { // NEW: Load sound state from localStorage
-    try {
-        const val = localStorage.getItem('snes_sound');
-        if (val === null) {
-            isSoundEnabled = true;
-        } else {
-            isSoundEnabled = val === '1';
-        }
-    } catch (_e) {
-        isSoundEnabled = true;
-    }
+function loadSettingsToUI() { // Load all settings and update UI
+    isSoundEnabled = true; // Default sound to true
+    isChallengeMode = true; // Default challenge mode to true
+
     if (soundToggle) soundToggle.checked = isSoundEnabled;
-    // No modeToggle yet, so skip it for now
+    if (modeToggle) modeToggle.checked = isChallengeMode;
+    // No inGameToggle yet, so skip it for now
 }
 
 function updateUIForSoundState() {
@@ -75,6 +77,12 @@ function updateUIForSoundState() {
             inGameToggle.title = 'Sound is OFF — click to unmute';
         }
         inGameToggle.disabled = !allowInteraction;
+    }
+}
+
+function updateUIForChallengeModeState() { // NEW: Update UI for challenge mode
+    if (modeToggle) {
+        modeToggle.checked = isChallengeMode;
     }
 }
 
@@ -125,7 +133,7 @@ function handleComparison(divEl) { // MODIFIED with click count logic
     if (!allowInteraction) return; // Ignore clicks while settings are open
     playSound(clickSnd);
 
-    if (clickCountEnabled && clickCount >= maxGuesses) { // Check click limit
+    if (isChallengeMode && clickCount >= maxGuesses) { // Check click limit
         return;
     }
 
@@ -136,7 +144,7 @@ function handleComparison(divEl) { // MODIFIED with click count logic
 
     // Increment click count if a new card is selected (first or second pick of a pair)
     if (!matchValue1 || (!matchValue2 && divEl !== matchElement1)) {
-        if (clickCountEnabled) {
+        if (isChallengeMode) {
             clickCount++;
         }
         updateClickMessage(); // Update message after each click
@@ -194,7 +202,7 @@ function resetMatchState() {
 
 function updateClickMessage() { // NEW: Function to update the click message display
     if (!clickMessage) return;
-    if (clickCountEnabled) {
+    if (isChallengeMode) {
         if (clickCount >= maxGuesses) {
             clickMessage.style.color = "red";
             clickMessage.textContent = "You have reached the maximum number of guesses. Try again!";
@@ -242,9 +250,10 @@ function assignImages() {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Wire up modal buttons
-    if (startBtn && soundToggle) {
+    if (startBtn && soundToggle && modeToggle) {
         startBtn.addEventListener('click', () => {
-            setSoundEnabled(soundToggle.checked); // Use new setSoundEnabled
+            setSetting('sound', soundToggle.checked);
+            setSetting('challengeMode', modeToggle.checked);
             hideSettingsModal();
         });
     }
@@ -263,7 +272,14 @@ document.addEventListener('DOMContentLoaded', () => {
         updateUIForSoundState(); // Update UI for in-game toggle initially
 
         inGameToggle.addEventListener('click', () => {
-            setSoundEnabled(!isSoundEnabled); // Use new setSoundEnabled
+            setSetting('sound', !isSoundEnabled);
+        });
+    }
+
+    // Wire up mode toggle
+    if (modeToggle) {
+        modeToggle.addEventListener('change', function() {
+            setSetting('challengeMode', this.checked);
         });
     }
 
@@ -282,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize game
     assignImages();
-    // No longer using loadInitialSoundState - handled by loadSettingsToUI in showSettingsModal
     showSettingsModal();
     updateClickMessage(); // Initialize click message
 });
