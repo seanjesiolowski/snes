@@ -84,6 +84,7 @@ function updateUIForChallengeModeState() { // NEW: Update UI for challenge mode
     if (modeToggle) {
         modeToggle.checked = isChallengeMode;
     }
+    updateClickMessage(); // Re-initialize click message based on mode change
 }
 
 // --- Modal Management ---
