@@ -1,0 +1,164 @@
+/* https://www.color-hex.com/color-palette/22515 */
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #211a21;
+    background: #cec9cc;
+
+    display: flex;
+    flex-direction: column; /*stacks child elements vertically*/
+    justify-content: center; /*aligns items across the main axis [vertical here]*/
+    align-items: center; /*aligns items across the cross axis [horizontal here]*/
+}
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.row {
+    width: 600px;
+    height: 80px;
+    padding: 5px;
+    border: 5px solid #4f43ae;
+    background: #908a99;
+
+    display: flex;
+    justify-content: space-evenly; /*aligns items across the main axis [horizontal here]*/
+    align-items: center; /*aligns items across the cross axis [vertical here]*/
+}
+.item {
+    /* Box art image ratios: 90:62 (most), 90:65 (Chrono Trigger, DKC2, Earthbound) */
+    width: 90px;
+    height: 62px;
+    border: 5px solid #211a21;
+    background: #b5b6e4;
+}
+.spacer {
+    height: 5px;
+}
+#fill {
+    width: 90px;
+    height: 62px;
+    background: #4f43ae;
+    
+    display: flex;
+    justify-content: center; /*aligns items across the main axis [horizontal here]*/
+    align-items: center; /*aligns items across the cross axis [vertical here]*/
+}
+/* Settings modal styles (polished) */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11,10,12,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+.modal {
+    background: linear-gradient(180deg,#fff 0%, #fbfbff 100%);
+    color: #1f1724;
+    padding: 18px;
+    border-radius: 12px;
+    width: 360px;
+    max-width: calc(100% - 40px);
+    box-shadow: 0 10px 30px rgba(16,12,32,0.45);
+    border: 1px solid rgba(79,67,174,0.12);
+    font-size: 14px;
+}
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.modal h2 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: 0.2px;
+}
+.modal p.subtitle {
+    margin: 6px 0 12px 0;
+    color: #4b415b;
+    font-size: 13px;
+}
+.modal .row {
+    /* reset global `.row` properties so modal rows don't inherit the large game row box */
+    width: auto;
+    height: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 12px 0;
+}
+/* Custom switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 28px;
+}
+.switch input { display: none; }
+.switch .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #d8d6e9;
+    border-radius: 999px;
+    transition: background 160ms ease;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+.switch .slider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(31,23,36,0.15);
+    transition: left 160ms ease, transform 160ms ease;
+}
+.switch input:checked + .slider {
+    background: linear-gradient(90deg,#6e5ce6,#4f43ae);
+}
+.switch input:checked + .slider::after {
+    left: 24px;
+    transform: translateY(-50%);
+}
+.modal .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 6px;
+}
+.btn {
+    border: none;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: transform 80ms ease, box-shadow 80ms ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+    background: linear-gradient(180deg,#6e5ce6,#4f43ae);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(79,67,174,0.18);
+}
+.btn-ghost {
+    background: transparent;
+    color: #4b415b;
+    border: 1px solid rgba(75,65,91,0.08);
+}
+/* Accessibility focus */
+.btn:focus, .switch input:focus + .slider { outline: 3px solid rgba(79,67,174,0.18); outline-offset: 3px; }
