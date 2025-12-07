@@ -29,7 +29,7 @@ function playSound(audioObj) {
     try {
         audioObj.currentTime = 0;
         audioObj.play();
-    } catch (e) {
+    } catch (_e) {
         // ignore play errors
     }
 }
@@ -72,7 +72,13 @@ function showSettingsModal() {
     if (inGameToggle) inGameToggle.disabled = true;
 
     // Focus primary action for quick keyboard start
-    if (startBtn) {
+    if (startBtn && cancelBtn) {
+        if (matchesFound > 0 || canReload) {
+            setTimeout(() => cancelBtn.focus(), 50);
+        } else {
+            setTimeout(() => startBtn.focus(), 50);
+        }
+    } else if (startBtn) { // Fallback if only startBtn exists
         setTimeout(() => startBtn.focus(), 50);
     }
 }
