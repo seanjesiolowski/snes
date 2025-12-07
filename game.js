@@ -36,11 +36,6 @@ function playSound(audioObj) {
 
 function updateSoundState(enabled) {
     isSoundEnabled = !!enabled;
-    try {
-        localStorage.setItem('snes_sound', isSoundEnabled ? '1' : '0');
-    } catch (e) {
-        // ignore storage errors
-    }
     updateUIForSoundState();
 }
 
@@ -63,14 +58,8 @@ function updateUIForSoundState() {
 }
 
 function loadInitialSoundState() {
-    let soundEnabled;
-    try {
-        const storedValue = localStorage.getItem('snes_sound');
-        soundEnabled = storedValue === null ? true : storedValue === '1';
-    } catch (e) {
-        soundEnabled = true;
-    }
-    updateSoundState(soundEnabled);
+    isSoundEnabled = true; // Default to sound on, as persistence is removed
+    updateUIForSoundState();
 }
 
 // --- Modal Management ---
@@ -208,8 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (cancelBtn) {
         cancelBtn.addEventListener('click', () => {
-            // Revert to saved setting and close
-            loadInitialSoundState();
             hideSettingsModal();
         });
     }
@@ -229,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Allow Escape to close the modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && settingsModal && settingsModal.style.display !== 'none') {
-            loadInitialSoundState();
             hideSettingsModal();
         }
     });
