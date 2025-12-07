@@ -162,3 +162,45 @@ img {
 }
 /* Accessibility focus */
 .btn:focus, .switch input:focus + .slider { outline: 3px solid rgba(79,67,174,0.18); outline-offset: 3px; }
+
+.in-game-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.in-game-toggle:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.in-game-toggle:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#clickMessage {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}

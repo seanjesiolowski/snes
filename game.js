@@ -7,6 +7,9 @@ let matchValue1 = null;
 let matchElement2 = null;
 let matchValue2 = null;
 let matchesFound = 0;
+let clickCountEnabled = true; // default to challenge mode
+let clickCount = 0;
+const maxGuesses = 50;
 
 // Audio elements
 const correctSnd = new Audio("aud/correct.mp3");
@@ -21,6 +24,8 @@ const inGameToggle = document.getElementById('inGameToggle');
 const startBtn = document.getElementById('startBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const fillElement = document.getElementById('fill');
+const clickMessage = document.getElementById('clickMessage'); // NEW: For click count messages
+
 
 // --- Sound Management ---
 
@@ -34,9 +39,25 @@ function playSound(audioObj) {
     }
 }
 
-function updateSoundState(enabled) {
+function setSoundEnabled(enabled) { // NEW: Persist sound state
     isSoundEnabled = !!enabled;
-    updateUIForSoundState();
+    try { localStorage.setItem('snes_sound', isSoundEnabled ? '1' : '0'); } catch(_e){}
+    updateUIForSoundState(); // Update UI after state change
+}
+
+function loadSettingsToUI() { // NEW: Load sound state from localStorage
+    try {
+        const val = localStorage.getItem('snes_sound');
+        if (val === null) {
+            isSoundEnabled = true;
+        } else {
+            isSoundEnabled = val === '1';
+        }
+    } catch (_e) {
+        isSoundEnabled = true;
+    }
+    if (soundToggle) soundToggle.checked = isSoundEnabled;
+    // No modeToggle yet, so skip it for now
 }
 
 function updateUIForSoundState() {
@@ -57,16 +78,11 @@ function updateUIForSoundState() {
     }
 }
 
-function loadInitialSoundState() {
-    isSoundEnabled = true; // Default to sound on, as persistence is removed
-    updateUIForSoundState();
-}
-
 // --- Modal Management ---
 
 function showSettingsModal() {
     if (!settingsModal) return;
-    loadInitialSoundState();
+    loadSettingsToUI(); // Use new loadSettingsToUI
     settingsModal.style.display = 'flex';
     allowInteraction = false;
     if (inGameToggle) inGameToggle.disabled = true;
@@ -105,15 +121,27 @@ function toggleDisplay(imgElement) {
     }
 }
 
-function handleComparison(divEl) {
+function handleComparison(divEl) { // MODIFIED with click count logic
     if (!allowInteraction) return; // Ignore clicks while settings are open
     playSound(clickSnd);
+
+    if (clickCountEnabled && clickCount >= maxGuesses) { // Check click limit
+        return;
+    }
 
     const imgElement = divEl.querySelector("img");
     if (!imgElement) return;
 
     const imgSrc = imgElement.src;
 
+    // Increment click count if a new card is selected (first or second pick of a pair)
+    if (!matchValue1 || (!matchValue2 && divEl !== matchElement1)) {
+        if (clickCountEnabled) {
+            clickCount++;
+        }
+        updateClickMessage(); // Update message after each click
+    }
+    
     if (!matchValue1) {
         matchElement1 = divEl;
         matchValue1 = imgSrc;
@@ -141,6 +169,10 @@ function handleComparison(divEl) {
                 }
                 canReload = true;
                 playSound(winSnd);
+                if (clickMessage) { // Display win message
+                    clickMessage.textContent = "Congratulations! You've found all matches!";
+                    clickMessage.style.color = "lightgreen";
+                }
             }
         } else {
             // Not a match
@@ -159,6 +191,22 @@ function resetMatchState() {
     matchElement2 = null;
     matchValue2 = null;
 }
+
+function updateClickMessage() { // NEW: Function to update the click message display
+    if (!clickMessage) return;
+    if (clickCountEnabled) {
+        if (clickCount >= maxGuesses) {
+            clickMessage.style.color = "red";
+            clickMessage.textContent = "You have reached the maximum number of guesses. Try again!";
+        } else {
+            clickMessage.textContent = `You have ${maxGuesses - clickCount} tries left.`;
+            clickMessage.style.color = "white"; // Reset color
+        }
+    } else {
+        clickMessage.textContent = ""; // Clear message if click count disabled
+    }
+}
+
 
 // --- Image Loading and Game Setup ---
 
@@ -196,21 +244,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Wire up modal buttons
     if (startBtn && soundToggle) {
         startBtn.addEventListener('click', () => {
-            updateSoundState(soundToggle.checked);
+            setSoundEnabled(soundToggle.checked); // Use new setSoundEnabled
             hideSettingsModal();
         });
     }
 
     if (cancelBtn) {
         cancelBtn.addEventListener('click', () => {
+            loadSettingsToUI(); // Reload settings if cancelled
             hideSettingsModal();
         });
     }
 
     // Wire up in-game toggle
     if (inGameToggle) {
+        // Initial setup for in-game toggle
+        loadSettingsToUI(); // Load settings to ensure correct initial state
+        updateUIForSoundState(); // Update UI for in-game toggle initially
+
         inGameToggle.addEventListener('click', () => {
-            updateSoundState(!isSoundEnabled);
+            setSoundEnabled(!isSoundEnabled); // Use new setSoundEnabled
         });
     }
 
@@ -222,12 +275,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Allow Escape to close the modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && settingsModal && settingsModal.style.display !== 'none') {
+            loadSettingsToUI(); // Reload settings if cancelled by Escape
             hideSettingsModal();
         }
     });
 
     // Initialize game
     assignImages();
-    loadInitialSoundState();
+    // No longer using loadInitialSoundState - handled by loadSettingsToUI in showSettingsModal
     showSettingsModal();
+    updateClickMessage(); // Initialize click message
 });
