@@ -172,11 +172,7 @@ function handleComparison(divEl) { // MODIFIED with click count logic
             resetMatchState();
 
             if (matchesFound === matchGoal) {
-                if (fillElement) {
-                    fillElement.textContent = "Play Again?";
-                    fillElement.style.color = "white";
-                }
-                canReload = true;
+                togglePlayAgain();
                 playSound(winSnd);
                 if (clickMessage) { // Display win message
                     clickMessage.textContent = "Congratulations! You've found all matches!";
@@ -207,6 +203,7 @@ function updateClickMessage() { // NEW: Function to update the click message dis
         if (clickCount >= maxGuesses) {
             clickMessage.style.color = "red";
             clickMessage.textContent = "You have reached the maximum number of guesses. Try again!";
+            togglePlayAgain();
         } else {
             clickMessage.textContent = `You have ${maxGuesses - clickCount} tries left.`;
             clickMessage.style.color = "white"; // Reset color
@@ -216,6 +213,13 @@ function updateClickMessage() { // NEW: Function to update the click message dis
     }
 }
 
+function togglePlayAgain() {
+    if (fillElement) {
+        fillElement.textContent = "Play Again?";
+        fillElement.style.color = "white";
+    }
+    canReload = true;
+}
 
 // --- Image Loading and Game Setup ---
 
